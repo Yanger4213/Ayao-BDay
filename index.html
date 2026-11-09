@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Birthday Times — Mom's Edition</title>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Special+Elite&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ===================== BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --parchment: #f4e9d0; --parchment-dk: #e8d5aa;
+      --ink: #1a1008;       --ink-faded: #3d2b0f;
+      --rule: #8b6914;      --rule-lt: #c8a85a;
+      --accent: #7a1a0a;    --gold: #b8860b;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #2a1a0a;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      color: var(--ink); min-height: 100vh; padding: 2rem 1rem 4rem;
+      overflow-x: hidden;
+    }
+
+    /* ===================== TICKER TAPE ===================== */
+    .ticker-wrap {
+      background: var(--ink); color: var(--gold);
+      font-family: 'Special Elite', serif;
+      font-size: 0.75rem; letter-spacing: 0.15em;
+      overflow: hidden; white-space: nowrap;
+      padding: 0.4rem 0; margin-bottom: 1rem;
+      position: relative; max-width: 1100px; margin: 0 auto 1rem;
+    }
+    .ticker-content {
+      display: inline-block;
+      animation: ticker 30s linear infinite;
+    }
+    @keyframes ticker {
+      0%   { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ===================== NEWSPAPER SHELL ===================== */
+    .newspaper {
+      max-width: 1100px; margin: 0 auto;
+      background: var(--parchment);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23p)' opacity='0.07'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at 50% 0%, #f9edd8 0%, var(--parchment) 60%, #dfc88a 100%);
+      border: 3px double var(--rule);
+      box-shadow: 0 8px 60px rgba(0,0,0,0.6), inset 0 0 80px rgba(180,130,30,0.08);
+      position: relative; overflow: hidden;
+    }
+    .newspaper::before, .newspaper::after {
+      content: ''; position: absolute; width: 80px; height: 80px;
+      background: radial-gradient(circle at corner, #c8a040 0%, transparent 70%);
+      opacity: 0.3; pointer-events: none;
+    }
+    .newspaper::before { top: 0; left: 0; border-radius: 0 0 80px 0; }
+    .newspaper::after  { bottom: 0; right: 0; border-radius: 80px 0 0 0; }
+
+    /* ===================== MASTHEAD ===================== */
+    .masthead {
+      border-bottom: 4px double var(--rule);
+      padding: 1.5rem 2rem 1rem; text-align: center;
+      background: linear-gradient(to bottom, #f9edd8, var(--parchment));
+    }
+    .masthead-top {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      font-family: 'Special Elite', serif; font-size: 0.72rem;
+      color: var(--ink-faded); letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--rule-lt);
+      padding-bottom: 0.4rem; margin-bottom: 0.6rem;
+    }
+    .masthead-top span { flex: 1; }
+    .masthead-top span:nth-child(2) { text-align: center; }
+    .masthead-top span:last-child    { text-align: right; }
+    .masthead h1 {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      line-height: 1; color: var(--ink);
+      text-shadow: 2px 2px 0 rgba(120,80,0,0.2);
+      margin: 0.1rem 0; cursor: default;
+    }
+    .masthead h1:hover { animation: shimmer 0.4s ease; }
+    @keyframes shimmer {
+      0%,100%{ text-shadow: 2px 2px 0 rgba(120,80,0,0.2); }
+      50%     { text-shadow: 2px 2px 20px rgba(184,134,11,0.6), -2px -2px 20px rgba(184,134,11,0.3); }
+    }
+    .masthead-subtitle {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: 1rem; color: var(--ink-faded); letter-spacing: 0.08em;
+      margin: 0.2rem 0 0.5rem; min-height: 1.4em;
+    }
+    .masthead-rule {
+      height: 3px;
+      background: repeating-linear-gradient(90deg, var(--rule) 0 6px, transparent 6px 10px);
+      margin: 0.5rem 0;
+    }
+    .masthead-banner {
+      background: var(--ink); color: var(--parchment);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.95rem, 2.5vw, 1.4rem);
+      font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.5rem 2rem; margin: 0.4rem -2rem;
+    }
+    .masthead-actions {
+      display: flex; gap: 0.8rem; justify-content: center;
+      padding: 0.8rem 0 0.2rem;
+    }
+    .btn {
+      font-family: 'Special Elite', serif; font-size: 0.75rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.5rem 1.2rem; cursor: pointer;
+      border: 1.5px solid; transition: all 0.2s;
+    }
+    .btn-dark  { background: var(--ink); color: var(--parchment); border-color: var(--rule); }
+    .btn-dark:hover  { background: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+    .btn-gold  { background: transparent; color: var(--gold); border-color: var(--gold); }
+    .btn-gold:hover  { background: var(--gold); color: var(--ink); transform: translateY(-1px); }
+
+    /* ===================== AGE COUNTER ===================== */
+    .age-counter {
+      background: var(--ink); color: var(--parchment);
+      text-align: center; padding: 0.8rem 2rem;
+      border-bottom: 3px solid var(--rule);
+      font-family: 'Special Elite', serif;
+    }
+    .age-counter .ac-label {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.4rem;
+    }
+    .age-counter .ac-numbers {
+      display: flex; justify-content: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .age-unit {
+      display: flex; flex-direction: column; align-items: center;
+      min-width: 60px;
+    }
+    .age-unit .num {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 2rem; color: var(--gold); line-height: 1;
+      transition: transform 0.15s ease;
+    }
+    .age-unit .num.bump { transform: scale(1.3); }
+    .age-unit .lbl {
+      font-size: 0.55rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--rule-lt);
+      margin-top: 0.1rem;
+    }
+    .age-sep { color: var(--rule); font-size: 1.2rem; align-self: center; padding-top: 0.4rem; }
+
+    /* ===================== SECTION SCROLL REVEAL ===================== */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal:nth-child(3) { transition-delay: 0.15s; }
+
+    /* ===================== TYPOGRAPHY ===================== */
+    h2.section-head {
+      font-family: 'Playfair Display', serif; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.25em; color: var(--accent);
+      border-top: 2px solid var(--accent); border-bottom: 1px solid var(--accent);
+      padding: 0.2rem 0; margin-bottom: 0.6rem;
+    }
+    h3.headline { font-family: 'Playfair Display', serif; font-weight: 900; line-height: 1.1; margin-bottom: 0.4rem; }
+    h3.headline.xl { font-size: clamp(1.6rem, 3.5vw, 2.5rem); }
+    h3.headline.lg { font-size: clamp(1.3rem, 2.5vw, 1.9rem); }
+    .byline { font-family: 'Special Elite', serif; font-size: 0.7rem; color: var(--ink-faded); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+    p.body-text { font-size: 0.82rem; line-height: 1.65; text-align: justify; hyphens: auto; margin-bottom: 0.6rem; }
+    .dropcap::first-letter { font-family: 'UnifrakturMaguntia', cursive; float: left; font-size: 3.6rem; line-height: 0.78; margin: 0.05em 0.08em 0 0; color: var(--accent); }
+
+    /* ===================== LAYOUT ===================== */
+    .paper-body { padding: 1.5rem 2rem 2rem; }
+    .row  { display: flex; gap: 0; }
+    .col  { padding: 0 1.2rem; flex: 1; }
+    .col:first-child { padding-left: 0; }
+    .col:last-child  { padding-right: 0; }
+    .col-2 { flex: 2; }
+    .col-rule { width: 1px; background: var(--rule-lt); flex-shrink: 0; }
+
+    /* ===================== FEATURED BOX ===================== */
+    .featured-box {
+      border: 2px solid var(--ink); padding: 1rem; margin-bottom: 1rem;
+      position: relative; background: rgba(255,255,255,0.15);
+      transition: box-shadow 0.3s;
+    }
+    .featured-box:hover { box-shadow: 4px 4px 0 var(--rule); }
+    .featured-box::before {
+      content: '★'; position: absolute; top: -0.65rem; left: 50%;
+      transform: translateX(-50%); background: var(--parchment);
+      padding: 0 0.4rem; color: var(--gold); font-size: 1rem;
+    }
+
+    /* ===================== VINYL ===================== */
+    .vinyl-wrap { display: flex; align-items: flex-start; gap: 0.8rem; margin: 0.5rem 0; }
+    .vinyl {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #c8a040 0 10%, #1a1008 10% 100%);
+      flex-shrink: 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+      position: relative; cursor: pointer;
+      animation: spin 8s linear infinite;
+    }
+    .vinyl.paused { animation-play-state: paused; }
+    .vinyl::after {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 4px, rgba(255,255,255,0.03) 4px, rgba(255,255,255,0.03) 5px);
+    }
+    .vinyl-tooltip {
+      position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+      background: var(--ink); color: var(--gold);
+      font-family: 'Special Elite', serif; font-size: 0.6rem;
+      letter-spacing: 0.1em; padding: 0.2rem 0.5rem;
+      white-space: nowrap; opacity: 0; transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .vinyl-wrap:hover .vinyl-tooltip { opacity: 1; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .vinyl-info { flex: 1; }
+
+    /* ===================== FILMSTRIP ===================== */
+    .filmstrip { border: 3px solid var(--ink); padding: 0.5rem; margin: 0.6rem 0; background: #0d0d0d; color: #f4e9d0; }
+    .filmstrip::before, .filmstrip::after { content: ''; display: block; height: 10px; background: repeating-linear-gradient(90deg, #0d0d0d 0 8px, #f4e9d0 8px 14px); margin: 0 -0.5rem; }
+    .filmstrip::before { margin-bottom: 0.5rem; } .filmstrip::after { margin-top: 0.5rem; }
+    .filmstrip h3 { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; color: #f4e9d0; }
+    .filmstrip p  { font-size: 0.75rem; color: #d0b88a; line-height: 1.4; margin-top: 0.3rem; }
+
+    /* ===================== EVENT LIST ===================== */
+    .event-list { list-style: none; padding: 0; margin: 0.5rem 0; }
+    .event-list li { display: flex; gap: 0.6rem; padding: 0.4rem 0; border-bottom: 1px dashed var(--rule-lt); font-size: 0.78rem; line-height: 1.4; }
+    .event-list li:last-child { border-bottom: none; }
+    .event-icon { font-size: 1rem; flex-shrink: 0; width: 1.4rem; text-align: center; }
+
+    /* ===================== CLASSIFIEDS ===================== */
+    .classifieds-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 2px solid var(--ink); margin: 0.5rem 0; }
+    .classified-ad {
+      padding: 0.65rem 0.75rem;
+      border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .classified-ad:hover { background: rgba(184,134,11,0.07); transform: scale(1.01); z-index: 1; }
+    .classified-ad:nth-child(3n)        { border-right: none; }
+    .classified-ad:nth-last-child(-n+3) { border-bottom: none; }
+    .classified-ad .ad-category { font-family: 'Special Elite', serif; font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); border-bottom: 1px solid var(--rule-lt); padding-bottom: 0.2rem; margin-bottom: 0.3rem; }
+    .classified-ad .ad-headline { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.84rem; line-height: 1.2; margin-bottom: 0.25rem; }
+    .classified-ad .ad-body { font-size: 0.7rem; line-height: 1.5; }
+    .classified-ad .ad-ref { font-family: 'Special Elite', serif; font-size: 0.58rem; color: var(--ink-faded); margin-top: 0.3rem; letter-spacing: 0.05em; border-top: 1px dashed var(--rule-lt); padding-top: 0.2rem; }
+    /* Rubber stamp effect */
+    .classified-ad .stamp {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-15deg) scale(0);
+      background: transparent; border: 3px solid #8b1a0a; border-radius: 4px;
+      color: #8b1a0a; font-family: 'Special Elite', serif; font-size: 1.1rem;
+      letter-spacing: 0.15em; padding: 0.2rem 0.5rem; opacity: 0;
+      transition: transform 0.3s cubic-bezier(.17,.67,.41,1.5), opacity 0.3s;
+      pointer-events: none; white-space: nowrap;
+      text-shadow: 1px 1px 0 rgba(139,26,10,0.3);
+    }
+    .classified-ad.stamped .stamp { transform: translate(-50%,-50%) rotate(-15deg) scale(1); opacity: 0.85; }
+    /* banner */
+    .classified-ad.banner-ad { background: var(--ink); color: var(--parchment); grid-column: span 3; text-align: center; border-right: none; padding: 0.8rem 1rem; }
+    .classified-ad.banner-ad:hover { background: #2a1810; }
+    .classified-ad.banner-ad .ad-category { color: var(--gold); border-color: rgba(184,134,11,0.4); }
+    .classified-ad.banner-ad .ad-headline { color: var(--parchment); font-size: 1.1rem; }
+    .classified-ad.banner-ad .ad-body     { color: #d0b88a; font-size: 0.75rem; }
+    .classified-ad.banner-ad .ad-ref      { color: #907848; border-color: rgba(184,134,11,0.3); }
+    .classified-ad.span2 { grid-column: span 2; border-right: none; }
+    .classified-ad.last-row { border-bottom: none; }
+
+    /* ===================== PHOTO GALLERY ===================== */
+    .photo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; margin: 0.8rem 0; }
+    .photo-grid.wide { grid-template-columns: 1.6fr 1fr 1fr; }
+    .photo-frame { display: flex; flex-direction: column; gap: 0.4rem; }
+    .photo-frame .img-wrap {
+      position: relative; background: var(--parchment-dk);
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0 var(--ink-faded), inset 0 0 0 4px var(--parchment), inset 0 0 0 5px var(--rule-lt);
+      aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .photo-frame .img-wrap:hover { transform: translateY(-3px) rotate(0.5deg); box-shadow: 6px 8px 0 var(--ink-faded), inset 0 0 0 4px var(--parchment), inset 0 0 0 5px var(--rule-lt); }
+    .photo-frame.portrait .img-wrap { aspect-ratio: 3/4; }
+    .photo-frame .img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 2; filter: sepia(0.35) contrast(1.05); transition: filter 0.3s; }
+    .photo-frame .img-wrap:hover img { filter: sepia(0) contrast(1.1); }
+    .photo-frame .img-placeholder {
+      position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.4rem;
+      background: repeating-linear-gradient(45deg, var(--parchment-dk) 0px, var(--parchment-dk) 10px, var(--parchment) 10px, var(--parchment) 20px);
+      border: 2px dashed var(--rule);
+    }
+    .ph-icon  { font-size: 2rem; opacity: 0.5; }
+    .ph-label { font-family: 'Special Elite', serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ink-faded); text-align: center; padding: 0 0.5rem; }
+    .ph-hint  { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.62rem; color: var(--rule); text-align: center; padding: 0 0.5rem; }
+    .photo-caption { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.72rem; color: var(--ink-faded); text-align: center; line-height: 1.4; padding: 0 0.2rem; }
+    .photo-caption .cap-year { font-family: 'Special Elite', serif; font-style: normal; font-size: 0.6rem; color: var(--accent); display: block; letter-spacing: 0.1em; margin-top: 0.1rem; }
+    .gallery-divider { text-align: center; font-family: 'Special Elite', serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.3em; color: var(--ink-faded); border-top: 1px solid var(--rule-lt); border-bottom: 1px solid var(--rule-lt); padding: 0.3rem 0; margin: 0.8rem 0; }
+
+    /* ===================== LETTER BOX ===================== */
+    .letter-box { border: 1px solid var(--rule); border-left: 4px solid var(--gold); padding: 1rem 1rem 1rem 1.2rem; margin: 0.5rem 0; background: rgba(184,134,11,0.05); font-family: 'IM Fell English', serif; font-style: italic; }
+    .letter-box .letter-header { font-style: normal; font-family: 'Special Elite', serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 0.4rem; }
+    .letter-box p { font-size: 0.85rem; line-height: 1.6; }
+    .letter-box .letter-sig { text-align: right; margin-top: 0.6rem; font-size: 0.8rem; color: var(--ink-faded); }
+
+    /* ===================== SIDEBAR BOX ===================== */
+    .sidebar-box { border: 2px solid var(--rule); padding: 0.8rem; margin: 0.8rem 0; text-align: center; position: relative; }
+    .sidebar-box .sb-label { position: absolute; top: -0.6rem; left: 50%; transform: translateX(-50%); background: var(--parchment); padding: 0 0.5rem; font-family: 'Special Elite', serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); white-space: nowrap; }
+    .sidebar-box .big-num { font-family: 'UnifrakturMaguntia', cursive; font-size: 3rem; color: var(--accent); line-height: 1; cursor: pointer; transition: transform 0.2s; }
+    .sidebar-box .big-num:hover { transform: scale(1.1); }
+    .sidebar-box p { font-size: 0.75rem; color: var(--ink-faded); line-height: 1.4; margin-top: 0.3rem; }
+
+    /* ===================== ADVERT ===================== */
+    .advert { border: 2px solid var(--ink); padding: 0.7rem; text-align: center; margin: 0.8rem 0; background: rgba(255,255,255,0.15); }
+    .advert .ad-top { font-family: 'UnifrakturMaguntia', cursive; font-size: 1.3rem; color: var(--ink); }
+    .advert p { font-family: 'Special Elite', serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-faded); }
+    .advert .ad-price { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; color: var(--accent); margin: 0.2rem 0; }
+
+    /* ===================== PULL QUOTE ===================== */
+    .pull-quote { border-top: 2px solid var(--rule); border-bottom: 2px solid var(--rule); padding: 0.6rem 0.5rem; margin: 0.8rem 0; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; font-weight: 700; color: var(--ink-faded); line-height: 1.4; }
+
+    /* ===================== CULTURE TILES ===================== */
+    .culture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.5rem 0; }
+    .culture-tile { border: 1px solid var(--rule); padding: 0.5rem; background: rgba(255,255,255,0.1); transition: background 0.2s, transform 0.2s; cursor: default; }
+    .culture-tile:hover { background: rgba(184,134,11,0.08); transform: translateY(-2px); }
+    .culture-tile .tile-cat { font-family: 'Special Elite', serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.2rem; }
+    .culture-tile .tile-title { font-family: 'Playfair Display', serif; font-size: 0.85rem; font-weight: 700; line-height: 1.2; }
+    .culture-tile .tile-desc  { font-size: 0.7rem; color: var(--ink-faded); margin-top: 0.2rem; }
+
+    /* ===================== ORNAMENTS ===================== */
+    .ornament { text-align: center; font-size: 1rem; color: var(--rule); letter-spacing: 0.5em; margin: 0.4rem 0; }
+    .fleuron  { color: var(--gold); }
+    .confetti-row { text-align: center; font-size: 1rem; letter-spacing: 0.5rem; margin: 0.3rem 0; animation: sway 3s ease-in-out infinite; }
+    @keyframes sway { 0%,100%{letter-spacing:0.5rem}50%{letter-spacing:0.7rem} }
+    .thick-rule { border: none; border-top: 3px solid var(--ink); margin: 0.8rem 0; }
+    .dbl-rule   { border: none; height: 4px; background: linear-gradient(to right, var(--rule), var(--ink), var(--rule)); margin: 0.8rem 0; }
+
+    /* ===================== FOOTER ===================== */
+    .newspaper-footer { border-top: 4px double var(--rule); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Special Elite', serif; font-size: 0.65rem; color: var(--ink-faded); letter-spacing: 0.08em; flex-wrap: wrap; gap: 0.5rem; }
+
+    /* ===================== LIGHTBOX ===================== */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(10,5,0,0.92);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 500; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox-inner {
+      max-width: 90vw; max-height: 90vh;
+      border: 4px solid var(--rule);
+      box-shadow: 0 0 60px rgba(184,134,11,0.3);
+      position: relative;
+      background: var(--ink);
+      transform: scale(0.9); transition: transform 0.3s;
+    }
+    .lightbox.open .lightbox-inner { transform: scale(1); }
+    .lightbox-inner img { display: block; max-width: 100%; max-height: 85vh; object-fit: contain; filter: sepia(0.1); }
+    .lightbox-inner .lb-placeholder { width: 500px; max-width: 90vw; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; background: repeating-linear-gradient(45deg, #1a1008 0 10px, #0d0806 10px 20px); color: var(--parchment-dk); }
+    .lightbox-inner .lb-placeholder .ph-icon { font-size: 3rem; opacity: 0.6; }
+    .lightbox-inner .lb-placeholder .ph-label { font-family: 'Special Elite', serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; text-align: center; padding: 0 1rem; }
+    .lightbox-caption { background: var(--ink); color: var(--parchment-dk); font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.85rem; text-align: center; padding: 0.5rem 1rem; border-top: 1px solid var(--rule); }
+    .lightbox-close {
+      position: absolute; top: -1.5rem; right: -1.5rem;
+      width: 2rem; height: 2rem; background: var(--accent);
+      color: var(--parchment); border: none; cursor: pointer;
+      font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-family: 'Special Elite', serif;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .lightbox-close:hover { background: var(--rule); transform: scale(1.1) rotate(90deg); }
+
+    /* ===================== NAV DOTS ===================== */
+    .nav-dots {
+      position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 0.6rem; z-index: 200;
+    }
+    .nav-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 2px solid var(--rule-lt); background: transparent;
+      cursor: pointer; transition: all 0.25s;
+      position: relative;
+    }
+    .nav-dot:hover, .nav-dot.active { background: var(--gold); border-color: var(--gold); transform: scale(1.3); }
+    .nav-dot .nd-label {
+      position: absolute; right: 1.4rem; top: 50%; transform: translateY(-50%);
+      background: var(--ink); color: var(--parchment);
+      font-family: 'Special Elite', serif; font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.2rem 0.5rem; white-space: nowrap;
+      opacity: 0; transition: opacity 0.2s; pointer-events: none;
+    }
+    .nav-dot:hover .nd-label { opacity: 1; }
+
+    /* ===================== BACK TO TOP ===================== */
+    .back-to-top {
+      position: fixed; bottom: 2rem; right: 1.2rem; z-index: 200;
+      width: 2.5rem; height: 2.5rem;
+      background: var(--ink); color: var(--gold);
+      border: 2px solid var(--rule); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.1rem;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.show { opacity: 1; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent); }
+
+    /* ===================== CONFETTI CANVAS ===================== */
+    #confetti-canvas {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 700px) {
+      body { padding: 0.5rem; }
+      .paper-body { padding: 1rem; }
+      .row { flex-direction: column; }
+      .col-rule { display: none; }
+      .col { padding: 0 !important; margin-bottom: 1rem; }
+      .masthead-top { flex-direction: column; gap: 0.2rem; text-align: center; }
+      .masthead-top span { text-align: center !important; }
+      .culture-grid { grid-template-columns: 1fr; }
+      .classifieds-grid { grid-template-columns: 1fr; }
+      .classified-ad { border-right: none !important; }
+      .classified-ad.banner-ad, .classified-ad.span2 { grid-column: span 1; }
+      .photo-grid, .photo-grid.wide { grid-template-columns: 1fr 1fr; }
+      .nav-dots { display: none; }
+      .age-counter .ac-numbers { gap: 0.5rem; }
+      .age-unit { min-width: 45px; }
+    }
+
+    /* ===================== PRINT ===================== */
+    @media print {
+      body { background: white; padding: 0; }
+      .newspaper { max-width: 100%; box-shadow: none; border: 2px double #333; }
+      .masthead-actions, .nav-dots, .back-to-top, #confetti-canvas, .ticker-wrap, .age-counter { display: none !important; }
+      .vinyl { animation: none; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      @page { margin: 1cm; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Page sections">
+  <div class="nav-dot active" data-target="front-page"><span class="nd-label">Front Page</span></div>
+  <div class="nav-dot" data-target="music-film"><span class="nd-label">Music &amp; Film</span></div>
+  <div class="nav-dot" data-target="classifieds"><span class="nd-label">Classifieds</span></div>
+  <div class="nav-dot" data-target="family-album"><span class="nd-label">Family Album</span></div>
+  <div class="nav-dot" data-target="personal"><span class="nd-label">Personal</span></div>
+</nav>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lightbox-inner" id="lightbox-inner">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+    <div id="lightbox-content"></div>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+</div>
+
+<!-- TICKER TAPE -->
+<div class="ticker-wrap">
+  <div class="ticker-content">
+    ★&nbsp; HAPPY 54TH BIRTHDAY MOM &nbsp;★&nbsp; "I CAN SEE CLEARLY NOW, THE RAIN IS GONE" — JOHNNY NASH, NOV. 10, 1972 &nbsp;★&nbsp; BORN ON THIS DAY: AYAO, THE FINEST VINTAGE &nbsp;★&nbsp; IT'S GONNA BE A BRIGHT, SUNSHINY DAY &nbsp;★&nbsp; SCORPIO · NOVEMBER 10 · 1972 &nbsp;★&nbsp; LOVED BEYOND MEASURE, CELEBRATED BEYOND WORDS &nbsp;★&nbsp; HAPPY BIRTHDAY MOM &nbsp;★&nbsp;
+  </div>
+</div>
+
+<!-- THE NEWSPAPER -->
+<div class="newspaper">
+
+  <!-- ==================== MASTHEAD ==================== -->
+  <div class="masthead">
+    <div class="masthead-top">
+      <span>Vol. LIV &nbsp;·&nbsp; No. 1</span>
+      <span>☙ Established Since November 10th, 1972 ❧</span>
+      <span>Price: One Warm Hug</span>
+    </div>
+    <h1 title="Click me!">The Birthday Times</h1>
+    <div class="masthead-subtitle" id="typewriter-target"></div>
+    <div class="masthead-rule"></div>
+    <div class="ornament">✦ ✦ ✦ ✦ ✦</div>
+    <div class="masthead-banner">Friday, November 10, 1972 — The Day Everything Changed for Our Family</div>
+    <div class="masthead-actions">
+      <button class="btn btn-gold" id="celebrateBtn">🎊 Celebrate!</button>
+      <button class="btn btn-dark" id="musicToggleBtn" title="Toggle Happy Birthday Melody">🎵 Music: ON</button>
+    </div>
+  </div>
+
+  <!-- ==================== AGE COUNTER ==================== -->
+  <div class="age-counter">
+    <div class="ac-label">Mom has been making the world brighter for</div>
+    <div class="ac-numbers">
+      <div class="age-unit"><span class="num" id="ac-years">—</span><span class="lbl">Years</span></div>
+      <span class="age-sep">·</span>
+      <div class="age-unit"><span class="num" id="ac-months">—</span><span class="lbl">Months</span></div>
+      <span class="age-sep">·</span>
+      <div class="age-unit"><span class="num" id="ac-days">—</span><span class="lbl">Days</span></div>
+      <span class="age-sep">·</span>
+      <div class="age-unit"><span class="num" id="ac-hours">—</span><span class="lbl">Hours</span></div>
+      <span class="age-sep">·</span>
+      <div class="age-unit"><span class="num" id="ac-mins">—</span><span class="lbl">Mins</span></div>
+      <span class="age-sep">·</span>
+      <div class="age-unit"><span class="num" id="ac-secs">—</span><span class="lbl">Secs</span></div>
+    </div>
+  </div>
+
+  <!-- ==================== PAPER BODY ==================== -->
+  <div class="paper-body">
+
+    <!-- ROW 1: FRONT PAGE -->
+    <div class="row reveal" id="front-page">
+      <div class="col col-2">
+        <h2 class="section-head">Late Edition — World News</h2>
+        <div class="featured-box">
+          <h3 class="headline xl">The Woman Who Made Everything Possible</h3>
+          <div class="byline">BY IMCHA &amp; YANGER &nbsp;·&nbsp; WITH LOVE &nbsp;·&nbsp; NOVEMBER 10, 2026</div>
+          <p class="body-text dropcap">
+            On this Friday morning — just three days after Richard Nixon's historic landslide re-election — the world quietly received a far more significant event: the arrival of <strong>Ayao</strong>, the woman who would one day become our Mom. While the nation's newspapers were still ink-stained with election analysis, those in the know understood that the real headline belonged to the maternity ward.
+          </p>
+          <p class="body-text">
+            Nurses on the floor reported an inexplicable warmth in the room. Doctors, who had seen many births, admitted this one felt different. And the radio in the waiting room was playing Johnny Nash's <em>"I Can See Clearly Now"</em> — which, we can only describe as the universe's most perfectly chosen soundtrack. It was a song about brightness, clarity, and sunshine — a song about Mom before Mom even had a name.
+          </p>
+          <p class="body-text">
+            Born into an era of wide collars, shag carpets, and the Apollo programme's final act, she arrived at a world poised between the old and the dazzlingly new. She would go on to do what all great mothers do — build an entire world for someone else, and make it feel effortless.
+          </p>
+        </div>
+        <div class="pull-quote">"Before I had words for it, she was home. Happy Birthday, Mom."</div>
+      </div>
+
+      <div class="col-rule"></div>
+
+      <div class="col">
+        <div class="sidebar-box">
+          <span class="sb-label">🎂 Today's Milestone</span>
+          <div class="big-num" id="bigNum" title="Click for a surprise!">54</div>
+          <p>Wonderful years of Mom —<br/>the woman who made<br/>our whole world possible.</p>
+        </div>
+        <h2 class="section-head">The World That Week</h2>
+        <ul class="event-list">
+          <li><span class="event-icon">🇺🇸</span><span>Nixon wins re-election in a historic 49-state landslide on Nov. 7 — just 3 days before Ayao's arrival.</span></li>
+          <li><span class="event-icon">✈️</span><span>Southern Airways Flight 49 hijacked on this very day — a dramatic 30-hour ordeal ending safely in Cuba.</span></li>
+          <li><span class="event-icon">⚓</span><span>USS <em>Constellation</em> sailors stage a historic protest aboard the carrier — a landmark in U.S. Navy history.</span></li>
+          <li><span class="event-icon">🚀</span><span>Apollo 17 launches December 7 — the last moonwalk ever. Ayao born just before that final step.</span></li>
+          <li><span class="event-icon">🕊</span><span>Kissinger declares "Peace is at hand" in Vietnam. Hope fills the November air.</span></li>
+          <li><span class="event-icon">🏆</span><span>Miami Dolphins en route to a perfect 17–0 season — the only undefeated team in NFL history.</span></li>
+        </ul>
+        <div class="advert">
+          <div class="ad-top">Chevrolet</div>
+          <p>The 1972 Chevrolet Impala — America's Favourite</p>
+          <div class="ad-price">Only $3,200</div>
+          <p>See your local dealer · Easy financing available</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="thick-rule" />
+
+    <!-- ROW 2: MUSIC + FILM + TV -->
+    <div class="row reveal" id="music-film">
+      <div class="col">
+        <h2 class="section-head">🎵 Music Chart — Week of Nov. 10</h2>
+        <h3 class="headline lg">"I Can See Clearly Now"</h3>
+        <div class="byline">Johnny Nash · #1 Billboard Hot 100</div>
+        <div class="vinyl-wrap" style="position:relative">
+          <span class="vinyl-tooltip" id="vinyl-tooltip">▶ Now Playing — click to pause</span>
+          <div class="vinyl" id="vinyl" title="Click to pause / play"></div>
+          <div class="vinyl-info">
+            <p class="body-text">The song that welcomed Mom into the world — a radiant, sun-drenched anthem of optimism. <em>"I can see clearly now, the rain is gone… it's gonna be a bright, bright, sun-shiny day."</em></p>
+          </div>
+        </div>
+        <p class="body-text">Johnny Nash's reggae-tinged pop masterpiece spent four weeks at #1. That it was playing the exact week a certain remarkable person was born feels less like coincidence and more like prophecy.</p>
+        <div class="ornament fleuron">❧ — ❦</div>
+        <h2 class="section-head" style="margin-top:0.8rem">Also Charting That Week</h2>
+        <ul class="event-list">
+          <li><span class="event-icon">🎸</span><span><em>"I'd Love You to Want Me"</em> — Lobo</span></li>
+          <li><span class="event-icon">🎸</span><span><em>"Garden Party"</em> — Ricky Nelson</span></li>
+          <li><span class="event-icon">🎸</span><span><em>"Nights in White Satin"</em> — The Moody Blues</span></li>
+          <li><span class="event-icon">🎸</span><span><em>"My Ding-a-Ling"</em> — Chuck Berry (his only #1!)</span></li>
+        </ul>
+        <div class="advert" style="margin-top:0.8rem">
+          <div class="ad-top">Columbia Records</div>
+          <p>New Release — Available Now</p>
+          <div class="ad-price">"I Can See Clearly Now"</div>
+          <p>45 rpm single · $0.79 at all good record shops</p>
+        </div>
+      </div>
+
+      <div class="col-rule"></div>
+
+      <div class="col">
+        <h2 class="section-head">🎬 At the Picture House</h2>
+        <div class="filmstrip">
+          <h3>The Valachi Papers</h3>
+          <p>#1 at the box office the week Mom was born! Charles Bronson stars as Mafia informant Joseph Valachi — with competition from a certain family called Corleone…</p>
+        </div>
+        <div class="byline">Also packing cinemas in November 1972:</div>
+        <ul class="event-list" style="margin-top:0.3rem">
+          <li><span class="event-icon">🎭</span><span><em>The Godfather</em> — Coppola's masterpiece still dominating. "An offer you can't refuse."</span></li>
+          <li><span class="event-icon">🎭</span><span><em>Deliverance</em> — Burt Reynolds and Jon Voight. Unforgettable.</span></li>
+          <li><span class="event-icon">🎭</span><span><em>Cabaret</em> — Liza Minnelli wins the Oscar. Broadway meets cinema.</span></li>
+          <li><span class="event-icon">🎭</span><span><em>Slaughterhouse-Five</em> — Vonnegut's anti-war classic hits the screen.</span></li>
+        </ul>
+        <div class="pull-quote" style="font-size:0.88rem; margin-top:0.8rem">"Mom was born the same year as <em>The Godfather</em>. Only legends arrive in such company."</div>
+      </div>
+
+      <div class="col-rule"></div>
+
+      <div class="col">
+        <h2 class="section-head">📺 On Television</h2>
+        <p class="body-text">In November 1972, the wood-panelled console in the living room beamed these beloved shows into American homes:</p>
+        <ul class="event-list">
+          <li><span class="event-icon">📺</span><span><strong>All in the Family</strong> — The #1 show on TV. Archie Bunker rules prime time.</span></li>
+          <li><span class="event-icon">📺</span><span><strong>M*A*S*H</strong> — Premiered Sept. 1972. Born the same year as Mom!</span></li>
+          <li><span class="event-icon">📺</span><span><strong>The Mary Tyler Moore Show</strong> — "You're gonna make it after all!"</span></li>
+          <li><span class="event-icon">📺</span><span><strong>Columbo</strong> — "Just one more thing…" terrorised suspects weekly.</span></li>
+          <li><span class="event-icon">📺</span><span><strong>The Bob Newhart Show</strong> — Premiered Sept. 1972. Deadpan comedy gold.</span></li>
+          <li><span class="event-icon">📺</span><span><strong>The Waltons</strong> — Also premiered Oct. 1972. "Good night, John-Boy."</span></li>
+        </ul>
+        <div class="sidebar-box" style="margin-top:0.8rem">
+          <span class="sb-label">Born Under Scorpio ♏</span>
+          <div style="font-size:2rem; margin:0.4rem 0;">♏</div>
+          <p style="font-size:0.72rem; line-height:1.5;"><strong>Scorpio</strong> — Passionate. Determined. Magnetic. Deeply loyal. Powerfully intuitive. Those born on November 10th possess a rare depth of spirit and an unshakeable will. The stars, it seems, chose wisely for Mom.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dbl-rule"></div>
+
+    <!-- ROW 3: CLASSIFIEDS + POP CULTURE -->
+    <div class="row reveal" id="classifieds">
+      <div class="col col-2">
+        <h2 class="section-head">📋 The Classifieds — Special Birthday Edition</h2>
+        <div class="byline">Click any ad to approve it &nbsp;·&nbsp; Notices, Announcements &amp; Personals</div>
+
+        <div class="classifieds-grid">
+
+          <div class="classified-ad banner-ad" data-stamp="✓ APPROVED">
+            <div class="ad-category">★ Announcement of the Highest Order ★</div>
+            <div class="ad-headline">WANTED: Everyone to Celebrate Mom</div>
+            <div class="ad-body">The world hereby issues a general notice that today is the birthday of Ayao — our Mom, an individual of exceptional quality, incomparable warmth, and entirely unreasonable amounts of love. All persons in possession of cake, good wishes, or a kind word are urged to deliver them immediately.</div>
+            <div class="ad-ref">Ref: BDay-1972-Nov10 · Placed by: Imcha &amp; Yanger, with love · No reasonable offer refused</div>
+            <div class="stamp">✓ APPROVED</div>
+          </div>
+
+          <div class="classified-ad" data-stamp="✓ SOLD">
+            <div class="ad-category">For Sale</div>
+            <div class="ad-headline">54 Years of Motherly Wisdom</div>
+            <div class="ad-body">Lightly used. Acquired over five decades of raising a family, holding us together, and making it all look easy. Includes: knowing exactly when something is wrong before anyone says a word, the ability to cook a meal from nothing, and hugs that fix everything.</div>
+            <div class="ad-ref">Owner: Mom · Asking price: One "We love you, Mom"</div>
+            <div class="stamp">✓ SOLD</div>
+          </div>
+
+          <div class="classified-ad" data-stamp="✓ FOUND">
+            <div class="ad-category">Lost &amp; Found</div>
+            <div class="ad-headline">FOUND: The Person Who Made Us</div>
+            <div class="ad-body">Found on November 10th, 1972, and again every single day since. Answers to "Mom," "Ayao," and "the reason everything turned out okay." If you know her, you are lucky. If you are Imcha and Yanger writing this — you are the luckiest of all.</div>
+            <div class="ad-ref">Finders: Imcha &amp; Yanger · Status: Keeping forever</div>
+            <div class="stamp">✓ FOUND</div>
+          </div>
+
+          <div class="classified-ad" data-stamp="✓ NOTED">
+            <div class="ad-category">Situation Wanted</div>
+            <div class="ad-headline">Mom Seeks: Rest, Cake &amp; Recognition</div>
+            <div class="ad-body">After 54 years of relentless excellence — including raising two kids, solving unsolvable problems, and always knowing the right thing to say — Mom is now formally seeking a full day of rest, the largest slice of birthday cake available, and the recognition she has always deserved.</div>
+            <div class="ad-ref">Availability: Today only · Naps: Fully encouraged</div>
+            <div class="stamp">✓ NOTED</div>
+          </div>
+
+          <div class="classified-ad" data-stamp="♥ DELIVERED">
+            <div class="ad-category">Personals</div>
+            <div class="ad-headline">From the Universe, To Mom</div>
+            <div class="ad-body">Scorpio, November 10, 1972 vintage. Passionate. Deep. Magnetic. Loyal beyond measure. The universe wishes to formally apologize for every hard year and to confirm: it was all part of shaping someone truly extraordinary. The kind of mother who changes everything.</div>
+            <div class="ad-ref">From: The Cosmos · Co-signed by: Imcha &amp; Yanger ❤</div>
+            <div class="stamp">♥ DELIVERED</div>
+          </div>
+
+          <div class="classified-ad" data-stamp="✓ PLAYING">
+            <div class="ad-category">Services Offered</div>
+            <div class="ad-headline">"I Can See Clearly Now" — Guaranteed</div>
+            <div class="ad-body">As the #1 song on the day Mom was born, Johnny Nash's anthem is hereby adopted as her official life theme. Bright, sun-shiny days are the standard — because when you are lucky enough to have her in your life, that is simply what every day feels like.</div>
+            <div class="ad-ref">Provider: Johnny Nash &amp; The Universe Ltd. · Est. 1972</div>
+            <div class="stamp">✓ PLAYING</div>
+          </div>
+
+          <div class="classified-ad span2 last-row" data-stamp="✓ FILED">
+            <div class="ad-category">Public Notice — Filed with the Registry of Remarkable Mothers</div>
+            <div class="ad-headline">On This Day, November 10, 1972 — Our Family Got Its Foundation</div>
+            <div class="ad-body">Be it known to all that the arrival of Ayao on this date was not merely a birth — it was the beginning of a story. The story of a woman who would give everything, ask for little, and love without condition. This newspaper, however inadequate, exists to say what is said too rarely: thank you, Mom. For everything. For every single thing.</div>
+            <div class="ad-ref">Filed by: Imcha &amp; Yanger · With gratitude too large for any newspaper · Year 1972 &amp; 2026</div>
+            <div class="stamp">✓ FILED</div>
+          </div>
+
+          <div class="classified-ad last-row" data-stamp="★ OPEN">
+            <div class="ad-category">Auction Notice</div>
+            <div class="ad-headline">Year 55 — Opens Tonight!</div>
+            <div class="ad-body">Year 54 is now officially closed for bids. It went to Mom — the only bidder, the best bidder. Year 55 opens at midnight. Bidding starts with optimism, good health, and all the love placed herein. Expected to be the finest lot yet.</div>
+            <div class="ad-ref">Auctioneer: Father Time · Highest bid: Outstanding</div>
+            <div class="stamp">★ OPEN</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-rule"></div>
+
+      <div class="col">
+        <h2 class="section-head">✨ Pop Culture Snapshot — 1972</h2>
+        <div class="culture-grid">
+          <div class="culture-tile"><div class="tile-cat">🏅 Sports</div><div class="tile-title">Munich Olympics</div><div class="tile-desc">The 1972 Summer Games — Mark Spitz wins 7 gold medals. Triumph and tragedy in equal measure.</div></div>
+          <div class="culture-tile"><div class="tile-cat">📺 TV Debut</div><div class="tile-title">M*A*S*H Premieres</div><div class="tile-desc">Sept. 1972 — one of TV's greatest ever comedies launches the same year as Mom. Great timing.</div></div>
+          <div class="culture-tile"><div class="tile-cat">🎮 Gaming</div><div class="tile-title">Atari &amp; Pong Born</div><div class="tile-desc">Atari founded in 1972. Pong released to arcades. The video game industry begins. Mom is a true original.</div></div>
+          <div class="culture-tile"><div class="tile-cat">👗 Fashion</div><div class="tile-title">Platform Era Peaks</div><div class="tile-desc">The taller the platform shoe, the cooler the person. Hot pants, halter tops, and mood rings everywhere.</div></div>
+          <div class="culture-tile"><div class="tile-cat">🎭 Cinema</div><div class="tile-title">The Godfather Reigns</div><div class="tile-desc">Coppola's masterpiece dominates 1972. Mom &amp; The Godfather: both timeless, both iconic.</div></div>
+          <div class="culture-tile"><div class="tile-cat">🚀 Space</div><div class="tile-title">Last Moon Landing</div><div class="tile-desc">Apollo 17 (Dec. '72) — the last humans on the Moon. Mom born just before that final step.</div></div>
+        </div>
+        <div class="confetti-row" style="margin-top:0.8rem">🎉 🎂 🎊 🥳 🎈</div>
+      </div>
+    </div>
+
+    <hr class="thick-rule" />
+
+    <!-- PHOTO GALLERY -->
+    <div class="reveal" id="family-album">
+      <h2 class="section-head">📷 The Family Album — Collected Memories</h2>
+      <div class="byline">A Life in Photographs · Click any photo to enlarge</div>
+
+      <div class="photo-grid wide">
+        <div class="photo-frame">
+          <div class="img-wrap" data-caption="Mom — our absolute favourite" onclick="openLightbox(this)">
+            <img src="photos/mom1.jpeg" alt="Main photo" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">📸</div><div class="ph-label">Photo of Mom</div></div>
+          </div>
+          <div class="photo-caption">Mom — our favourite person<span class="cap-year">· Our World ·</span></div>
+        </div>
+        <div class="photo-frame portrait">
+          <div class="img-wrap" data-caption="Mom, radiant and timeless" onclick="openLightbox(this)">
+            <img src="photos/mom2.jpeg" alt="Photo 2" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">🌸</div><div class="ph-label">Mom</div></div>
+          </div>
+          <div class="photo-caption">Radiant &amp; timeless<span class="cap-year">· Always Beautiful ·</span></div>
+        </div>
+        <div class="photo-frame portrait">
+          <div class="img-wrap" data-caption="Together — always" onclick="openLightbox(this)">
+            <img src="photos/mom3.jpeg" alt="Photo 3" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">👨‍👩‍👦</div><div class="ph-label">Family</div></div>
+          </div>
+          <div class="photo-caption">Together — always<span class="cap-year">· Family ·</span></div>
+        </div>
+      </div>
+
+      <div class="gallery-divider">✦ &nbsp; More Memories &nbsp; ✦</div>
+
+      <div class="photo-grid">
+        <div class="photo-frame">
+          <div class="img-wrap" data-caption="Celebrating together" onclick="openLightbox(this)">
+            <img src="photos/mom4.jpeg" alt="Photo 4" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">🎂</div><div class="ph-label">Celebration</div></div>
+          </div>
+          <div class="photo-caption">Celebrating together<span class="cap-year">· Special Days ·</span></div>
+        </div>
+        <div class="photo-frame">
+          <div class="img-wrap" data-caption="Adventures and smiles" onclick="openLightbox(this)">
+            <img src="photos/mom5.jpeg" alt="Photo 5" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">🌍</div><div class="ph-label">Moments</div></div>
+          </div>
+          <div class="photo-caption">Adventures and smiles<span class="cap-year">· Memories ·</span></div>
+        </div>
+        <div class="photo-frame">
+          <div class="img-wrap" data-caption="Mom at her best" onclick="openLightbox(this)">
+            <img src="photos/mom6.jpeg" alt="Photo 6" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">💃</div><div class="ph-label">Mom</div></div>
+          </div>
+          <div class="photo-caption">Unstoppable as always<span class="cap-year">· Grace &amp; Strength ·</span></div>
+        </div>
+        <div class="photo-frame">
+          <div class="img-wrap" data-caption="A moment worth keeping forever" onclick="openLightbox(this)">
+            <img src="photos/mom7.jpeg" alt="Photo 7" onerror="this.style.display='none'" />
+            <div class="img-placeholder"><div class="ph-icon">❤️</div><div class="ph-label">Cherished</div></div>
+          </div>
+          <div class="photo-caption">Worth keeping forever<span class="cap-year">· With All Our Love ·</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="thick-rule" />
+
+    <!-- ROW 4: PERSONAL + FUN FACTS -->
+    <div class="row reveal" id="personal">
+      <div class="col col-2">
+        <h2 class="section-head">💌 Letters to the Editor — Personal Dispatches</h2>
+        <div class="letter-box">
+          <div class="letter-header">A Letter From Imcha and Yanger · Published on the Front Page, Where You Belong</div>
+          <p>Mom, they say the greatest things in life are impossible to put into words. We think that's because those things are usually you.</p>
+          <p style="margin-top:0.5rem">Fifty-four years ago today, on a Friday morning in November, while the world was busy with its own noise — elections, headlines, the last moonwalks — the most important thing that ever happened to our family, happened quietly. You arrived. And everything that came after, everything that matters, can be traced back to that moment.</p>
+          <p style="margin-top:0.5rem">You were born the same year as <em>The Godfather</em>, Pong, and M*A*S*H — things the world would call iconic. But in our house, in our story, the most iconic thing that came from 1972 is you. The woman who made home feel like home. Who showed up, every single time. Who gave more than anyone ever asked for, and made it look like the most natural thing in the world.</p>
+          <p style="margin-top:0.5rem">The #1 song the day you were born says it all: <em>"I can see clearly now, the rain is gone… it's gonna be a bright, bright, sun-shiny day."</em> That's what having you as a Mom has always felt like.</p>
+          <p style="margin-top:0.5rem">Happy Birthday, Ayao. Happy Birthday, Mom. ❤</p>
+          <div class="letter-sig">— Imcha and Yanger, with more love than this newspaper can hold</div>
+        </div>
+        <h2 class="section-head" style="margin-top:1rem">📋 Notable Fellow November 10 Birthdays</h2>
+        <ul class="event-list">
+          <li><span class="event-icon">👤</span><span><strong>Martin Luther</strong> — Theologian &amp; reformer. Born Nov. 10, 1483. Mom is in exceptional company.</span></li>
+          <li><span class="event-icon">👤</span><span><strong>Richard Burton</strong> — Legendary Welsh actor. Born Nov. 10, 1925. Voice of velvet.</span></li>
+          <li><span class="event-icon">👤</span><span><strong>Sinbad</strong> — Comedian &amp; actor. Born Nov. 10, 1956. The birthday club is a distinguished one.</span></li>
+        </ul>
+      </div>
+
+      <div class="col-rule"></div>
+
+      <div class="col">
+        <h2 class="section-head">🔭 Did You Know?</h2>
+        <ul class="event-list">
+          <li><span class="event-icon">🌍</span><span>The world population on Nov. 10, 1972 was approximately <strong>3.85 billion</strong>. Today it's 8.2 billion — Mom has watched humanity more than double!</span></li>
+          <li><span class="event-icon">📱</span><span>When Mom was born, the most advanced "portable" computer weighed 55 lbs. Now you hold one in your pocket that's a billion times more powerful.</span></li>
+          <li><span class="event-icon">🎂</span><span>Mom has celebrated approximately <strong>19,724 days</strong> on this Earth as of today. Each one presumably better than the last.</span></li>
+          <li><span class="event-icon">❤️</span><span>Mom's heart has beaten roughly <strong>2.3 billion times</strong>. Each beat — a gift to everyone around her.</span></li>
+          <li><span class="event-icon">🌙</span><span>Mom has experienced <strong>648 full moons</strong>. That's a lot of evenings worth looking up at the sky.</span></li>
+          <li><span class="event-icon">🎵</span><span>The #1 song on Mom's birthday was about clarity, brightness, and sunshine. The universe really does have a poetic streak.</span></li>
+        </ul>
+        <div class="sidebar-box" style="margin-top:0.8rem">
+          <span class="sb-label">⏳ Time Capsule</span>
+          <p style="text-align:left; font-size:0.72rem; line-height:1.6; margin-top:0.6rem">
+            <strong>Then (1972):</strong> Gallon of milk ~$0.52 · A Big Mac: $0.65 · A new house: $27,500 · Calls on a rotary phone took <em>patience and a steady finger</em>.<br/><br/>
+            <strong>Now (2026):</strong> Gallon of milk ~$4.50 · A Big Mac: ~$7.50 · A new house: ~$430,000 · Calls happen instantly, beamed from satellites in orbit.<br/><br/>
+            <em>What a ride it has been. And Mom has been here for all of it.</em>
+          </p>
+        </div>
+        <div class="advert" style="margin-top:0.8rem">
+          <div class="ad-top">🎂 Happy Birthday!</div>
+          <p>From Imcha and Yanger, with all the love</p>
+          <div class="ad-price" style="font-size:1.5rem">Mom — Ayao</div>
+          <p>Est. November 10, 1972 · Finest vintage · Our whole world</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /paper-body -->
+
+  <div class="newspaper-footer">
+    <span>THE BIRTHDAY TIMES · Special Edition</span>
+    <span>✦ &nbsp; Made with love by Imcha and Yanger · Nov. 10, 2026 &nbsp; ✦</span>
+    <span>All prices in USD · Historical data sourced from the archives</span>
+  </div>
+
+</div><!-- /newspaper -->
+
+<script>
+/* =============================================
+   1. CONFETTI
+============================================= */
+const canvas = document.getElementById('confetti-canvas');
+const ctx    = canvas.getContext('2d');
+let particles = [];
+const COLORS  = ['#f4e9d0','#b8860b','#8b6914','#c8a85a','#7a1a0a','#e8d5aa','#c8a040','#ffffff'];
+
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function burst(count = 180, cx = null) {
+  const x0 = cx !== null ? cx : Math.random() * canvas.width;
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: x0, y: -10,
+      w: Math.random() * 11 + 4, h: Math.random() * 6 + 3,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      rot: Math.random() * Math.PI * 2,
+      rs: (Math.random() - 0.5) * 0.25,
+      vx: (Math.random() - 0.5) * 8,
+      vy: Math.random() * 5 + 1.5,
+      life: 1
+    });
+  }
+  if (particles.length === count) requestAnimationFrame(drawConfetti);
+}
+
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles = particles.filter(p => p.life > 0);
+  particles.forEach(p => {
+    p.x  += p.vx; p.y += p.vy; p.vy += 0.12;
+    p.vx *= 0.99; p.rot += p.rs; p.life -= 0.007;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    ctx.restore();
+  });
+  if (particles.length > 0) requestAnimationFrame(drawConfetti);
+}
+
+document.getElementById('celebrateBtn').addEventListener('click', function() {
+  for (let i = 0; i < 4; i++) setTimeout(() => burst(80, Math.random() * canvas.width), i * 180);
+});
+document.getElementById('bigNum').addEventListener('click', function() {
+  burst(220, this.getBoundingClientRect().left + this.offsetWidth / 2);
+});
+
+/* =============================================
+   2. TYPEWRITER
+============================================= */
+const TEXT   = "Special Commemorative Edition · Mom's 54th Birthday";
+const target = document.getElementById('typewriter-target');
+let ti       = 0;
+function typeNext() {
+  if (ti < TEXT.length) { target.textContent += TEXT[ti++]; setTimeout(typeNext, 45); }
+  else { setTimeout(() => burst(160), 400); } // confetti after typing done
+}
+setTimeout(typeNext, 800);
+
+/* =============================================
+   3. SCROLL REVEAL (IntersectionObserver)
+============================================= */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* =============================================
+   4. LIVE AGE COUNTER
+============================================= */
+const BIRTH = new Date(1972, 10, 10, 0, 0, 0); // Nov 10, 1972
+const els   = { y: document.getElementById('ac-years'), mo: document.getElementById('ac-months'), d: document.getElementById('ac-days'), h: document.getElementById('ac-hours'), m: document.getElementById('ac-mins'), s: document.getElementById('ac-secs') };
+
+function updateAge() {
+  const now  = new Date();
+  let years  = now.getFullYear() - BIRTH.getFullYear();
+  let months = now.getMonth()    - BIRTH.getMonth();
+  let days   = now.getDate()     - BIRTH.getDate();
+  if (days   < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if (months < 0) { years--;  months += 12; }
+  const totalSec = Math.floor((now - BIRTH) / 1000);
+  const secs   = totalSec % 60;
+  const mins   = Math.floor(totalSec / 60) % 60;
+  const hours  = Math.floor(totalSec / 3600) % 24;
+
+  function set(el, val) {
+    const v = String(val).padStart(2, '0');
+    if (el.textContent !== v) {
+      el.textContent = v;
+      el.classList.remove('bump');
+      void el.offsetWidth; // reflow
+      el.classList.add('bump');
+    }
+  }
+  set(els.y,  years);  set(els.mo, months); set(els.d,  days);
+  set(els.h,  hours);  set(els.m,  mins);   set(els.s,  secs);
+}
+updateAge();
+setInterval(updateAge, 1000);
+
+/* =============================================
+   5. VINYL CLICK (pause/play)
+============================================= */
+const vinyl   = document.getElementById('vinyl');
+const tooltip = document.getElementById('vinyl-tooltip');
+let spinning  = true;
+vinyl.addEventListener('click', () => {
+  spinning = !spinning;
+  vinyl.classList.toggle('paused', !spinning);
+  tooltip.textContent = spinning ? '▶ Now Playing — click to pause' : '⏸ Paused — click to play';
+});
+
+/* =============================================
+   6. PHOTO LIGHTBOX
+============================================= */
+const lightbox    = document.getElementById('lightbox');
+const lbContent   = document.getElementById('lightbox-content');
+const lbCaption   = document.getElementById('lightbox-caption');
+const lbClose     = document.getElementById('lightbox-close');
+
+function openLightbox(wrap) {
+  const img = wrap.querySelector('img');
+  const cap = wrap.dataset.caption || '';
+  lbCaption.textContent = cap;
+  lbContent.innerHTML = '';
+
+  if (img && img.src && !img.style.display.includes('none') && img.naturalWidth > 0) {
+    const clone = document.createElement('img');
+    clone.src = img.src; clone.alt = img.alt;
+    lbContent.appendChild(clone);
+  } else {
+    const ph = wrap.querySelector('.img-placeholder').cloneNode(true);
+    ph.className = 'lb-placeholder';
+    lbContent.appendChild(ph);
+  }
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+/* =============================================
+   7. CLASSIFIED STAMP
+============================================= */
+document.querySelectorAll('.classified-ad[data-stamp]').forEach(ad => {
+  const stamp = ad.querySelector('.stamp');
+  if (!stamp) return;
+  ad.addEventListener('click', () => {
+    if (!ad.classList.contains('stamped')) {
+      ad.classList.add('stamped');
+      setTimeout(() => ad.classList.remove('stamped'), 2200);
+    }
+  });
+});
+
+/* =============================================
+   8. NAV DOTS
+============================================= */
+const sections = ['front-page','music-film','classifieds','family-album','personal'];
+const dots     = document.querySelectorAll('.nav-dot');
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const el = document.getElementById(dot.dataset.target);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+const secObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = sections.indexOf(e.target.id);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(id => { const el = document.getElementById(id); if (el) secObserver.observe(el); });
+
+/* =============================================
+   9. BACK TO TOP
+============================================= */
+const btt = document.getElementById('backToTop');
+window.addEventListener('scroll', () => { btt.classList.toggle('show', window.scrollY > 320); });
+
+/* =============================================
+   10. HAPPY BIRTHDAY MUSIC BOX (CONTINUOUS LOOP)
+============================================= */
+let audioCtx = null;
+let musicEnabled = true;
+let musicTimeoutId = null;
+
+const NOTE_FREQS = {
+  G4: 392.00,
+  A4: 440.00,
+  B4: 493.88,
+  C5: 523.25,
+  D5: 587.33,
+  E5: 659.25,
+  F5: 698.46,
+  G5: 783.99
+};
+
+// "Happy Birthday to You" notes and relative beat durations
+const HBD_SCORE = [
+  // Happy birthday to you
+  { note: 'G4', dur: 0.75 }, { note: 'G4', dur: 0.25 },
+  { note: 'A4', dur: 1.0 },  { note: 'G4', dur: 1.0 },
+  { note: 'C5', dur: 1.0 },  { note: 'B4', dur: 2.0 },
+
+  // Happy birthday to you
+  { note: 'G4', dur: 0.75 }, { note: 'G4', dur: 0.25 },
+  { note: 'A4', dur: 1.0 },  { note: 'G4', dur: 1.0 },
+  { note: 'D5', dur: 1.0 },  { note: 'C5', dur: 2.0 },
+
+  // Happy birthday dear Mom
+  { note: 'G4', dur: 0.75 }, { note: 'G4', dur: 0.25 },
+  { note: 'G5', dur: 1.0 },  { note: 'E5', dur: 1.0 },
+  { note: 'C5', dur: 1.0 },  { note: 'B4', dur: 1.0 }, { note: 'A4', dur: 2.0 },
+
+  // Happy birthday to you!
+  { note: 'F5', dur: 0.75 }, { note: 'F5', dur: 0.25 },
+  { note: 'E5', dur: 1.0 },  { note: 'C5', dur: 1.0 },
+  { note: 'D5', dur: 1.0 },  { note: 'C5', dur: 2.6 }
+];
+
+function initAudioContext() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+function playMusicBoxNote(freq, durationSec) {
+  if (!audioCtx || audioCtx.state !== 'running' || !musicEnabled) return;
+
+  const now = audioCtx.currentTime;
+  const oscMain = audioCtx.createOscillator();
+  const oscHarm = audioCtx.createOscillator();
+  const masterGain = audioCtx.createGain();
+  const harmGain = audioCtx.createGain();
+
+  // Gentle chime / music box bell character
+  oscMain.type = 'sine';
+  oscMain.frequency.setValueAtTime(freq, now);
+
+  oscHarm.type = 'triangle';
+  oscHarm.frequency.setValueAtTime(freq * 2, now); // Sweet sparkle overtone
+  harmGain.gain.setValueAtTime(0.2, now);
+
+  oscHarm.connect(harmGain);
+  harmGain.connect(masterGain);
+  oscMain.connect(masterGain);
+  masterGain.connect(audioCtx.destination);
+
+  // Pluck envelope: crisp chime attack + gentle warm ringing decay
+  const attack = 0.012;
+  const decay = Math.max(0.35, durationSec * 1.15);
+  masterGain.gain.setValueAtTime(0.0001, now);
+  masterGain.gain.exponentialRampToValueAtTime(0.18, now + attack);
+  masterGain.gain.exponentialRampToValueAtTime(0.0001, now + attack + decay);
+
+  oscMain.start(now);
+  oscHarm.start(now);
+  oscMain.stop(now + attack + decay + 0.05);
+  oscHarm.stop(now + attack + decay + 0.05);
+}
+
+function playBirthdayLoop(step = 0) {
+  if (!musicEnabled) return;
+  initAudioContext();
+
+  const BEAT_MS = 430; // Pleasant music box tempo
+
+  if (step >= HBD_SCORE.length) {
+    // 1.5 second pause between loops, then play again!
+    musicTimeoutId = setTimeout(() => {
+      if (musicEnabled) playBirthdayLoop(0);
+    }, 1500);
+    return;
+  }
+
+  const item = HBD_SCORE[step];
+  playMusicBoxNote(NOTE_FREQS[item.note], (item.dur * BEAT_MS) / 1000);
+
+  musicTimeoutId = setTimeout(() => {
+    if (musicEnabled) playBirthdayLoop(step + 1);
+  }, item.dur * BEAT_MS);
+}
+
+function startMusic() {
+  if (!musicEnabled) return;
+  initAudioContext();
+  if (!musicTimeoutId) {
+    playBirthdayLoop(0);
+  }
+}
+
+function stopMusic() {
+  if (musicTimeoutId) {
+    clearTimeout(musicTimeoutId);
+    musicTimeoutId = null;
+  }
+}
+
+// User toggle button
+const musicToggleBtn = document.getElementById('musicToggleBtn');
+if (musicToggleBtn) {
+  musicToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    musicEnabled = !musicEnabled;
+    if (musicEnabled) {
+      musicToggleBtn.textContent = '🎵 Music: ON';
+      musicToggleBtn.classList.remove('btn-dark');
+      musicToggleBtn.classList.add('btn-gold');
+      startMusic();
+    } else {
+      musicToggleBtn.textContent = '🔇 Music: OFF';
+      musicToggleBtn.classList.remove('btn-gold');
+      musicToggleBtn.classList.add('btn-dark');
+      stopMusic();
+    }
+  });
+}
+
+// Start playing on the very first click, tap, or interaction anywhere on page (browser policy)
+const firstInteractionTrigger = () => {
+  if (musicEnabled && !musicTimeoutId) {
+    startMusic();
+  }
+  window.removeEventListener('click', firstInteractionTrigger);
+  window.removeEventListener('touchstart', firstInteractionTrigger);
+  window.removeEventListener('keydown', firstInteractionTrigger);
+};
+window.addEventListener('click', firstInteractionTrigger);
+window.addEventListener('touchstart', firstInteractionTrigger);
+window.addEventListener('keydown', firstInteractionTrigger);
+</script>
+</body>
+</html>
